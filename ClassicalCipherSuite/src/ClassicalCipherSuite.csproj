@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>ClassicalCipherSuite</AssemblyName>
+    <RootNamespace>ClassicalCipherSuite</RootNamespace>
+  </PropertyGroup>
+
+</Project>
