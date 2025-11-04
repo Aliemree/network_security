@@ -12,7 +12,7 @@
 **Dual implementation of 8 classical encryption algorithms in C# and TypeScript**  
 *Educational, full-stack, cross-platform, comprehensive learning platform with step-by-step visualization*
 
-[🌐 Live Demo](#) | [📖 Documentation](#-documentation) | [🚀 Quick Start](#-quick-start) | [🧪 Test Results](./TEST_RESULTS.md)
+[🌐 Live Demo](https://network-security-phi.vercel.app/) | [📖 Documentation](#-documentation) | [🚀 Quick Start](#-quick-start) | [🧪 Test Results](#-test-results)
 
 </div>
 
