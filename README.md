@@ -18,7 +18,7 @@
 
 ---
 
-## 📸 Screenshots
+## 📸 Screenshots & Demo
 
 <div align="center">
 
@@ -31,6 +31,42 @@
 *Expandable cards with history, theory, examples, and security analysis*
 
 ![Algorithm Cards](./assets/screenshot-algorithms.png)
+
+### Cipher Playground - Interactive Interface
+*Select algorithm, choose encrypt/decrypt mode, and configure parameters*
+
+![Cipher Selection](./assets/screenshot-cipher-selection.png)
+
+### Caesar Cipher - Real-time Encryption
+*Instant encryption/decryption with copy-to-clipboard functionality*
+
+![Caesar Cipher](./assets/screenshot-caesar-cipher.png)
+
+### Step-by-Step Visualization - Interactive Learning
+*Watch exactly how each character transforms during encryption*
+
+![Step-by-Step View 1](./assets/screenshot-step-by-step-1.png)
+
+*Interactive controls: Play, Pause, Speed adjustment, Navigation*
+
+![Step-by-Step View 2](./assets/screenshot-step-by-step-2.png)
+
+### Playfair Cipher - 5×5 Matrix
+*Visualize digraph transformations with matrix display*
+
+![Playfair Matrix](./assets/screenshot-playfair-matrix.png)
+
+### Hill Cipher - Matrix Multiplication
+*See matrix operations and vector transformations in action*
+
+![Hill Cipher](./assets/screenshot-hill-cipher.png)
+
+### 🎬 Video Demo
+*Complete walkthrough of step-by-step visualization feature*
+
+https://github.com/user-attachments/assets/demo-step-by-step.mov
+
+> **Note**: Click to play the demo video showing the interactive step-by-step encryption process.
 
 </div>
 
