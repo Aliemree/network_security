@@ -33,4 +33,19 @@ export interface CipherResult {
   success: boolean;
   output?: string;
   error?: string;
+  steps?: EncryptionStep[];
+}
+
+// Step-by-step visualization için
+export interface EncryptionStep {
+  stepNumber: number;
+  description: string;
+  input: string;
+  output: string;
+  details?: string;
+  highlight?: {
+    inputIndex?: number[];
+    outputIndex?: number[];
+  };
+  calculation?: string;
 }

@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowLeft, Lock, Unlock, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Lock, Unlock, Copy, Check, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import StepByStepViewer from '@/components/StepByStepViewer';
+import { EncryptionStep } from '@/lib/types';
 import {
   caesarEncrypt,
   caesarDecrypt,
@@ -32,6 +34,8 @@ export default function CipherPage() {
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+  const [steps, setSteps] = useState<EncryptionStep[]>([]);
+  const [showSteps, setShowSteps] = useState(true);
 
   // Cipher-specific options
   const [shift, setShift] = useState(3);
@@ -44,6 +48,7 @@ export default function CipherPage() {
   const handleProcess = () => {
     setError('');
     setOutput('');
+    setSteps([]);
 
     try {
       let result;
@@ -88,6 +93,9 @@ export default function CipherPage() {
 
       if (result.success) {
         setOutput(result.output || '');
+        if (result.steps && result.steps.length > 0) {
+          setSteps(result.steps);
+        }
       } else {
         setError(result.error || 'Bilinmeyen hata');
       }
@@ -293,6 +301,26 @@ export default function CipherPage() {
               <div className="p-4 bg-slate-700 rounded-lg">
                 <pre className="text-white font-mono whitespace-pre-wrap break-all">{output}</pre>
               </div>
+            </div>
+          )}
+
+          {/* Step-by-Step Visualization */}
+          {steps.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setShowSteps(!showSteps)}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 rounded-lg transition-colors mb-2"
+              >
+                {showSteps ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showSteps ? 'Adım Adım Görünümü Gizle' : 'Adım Adım Görünümü Göster'}
+              </button>
+              
+              {showSteps && (
+                <StepByStepViewer 
+                  steps={steps} 
+                  title={`${cipher.charAt(0).toUpperCase() + cipher.slice(1)} - Adım Adım ${mode === 'encrypt' ? 'Şifreleme' : 'Çözme'}`}
+                />
+              )}
             </div>
           )}
         </div>

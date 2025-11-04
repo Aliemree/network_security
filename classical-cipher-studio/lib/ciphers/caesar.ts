@@ -1,5 +1,5 @@
 // Caesar Cipher
-import { CipherOptions, CipherResult } from '../types';
+import { CipherOptions, CipherResult, EncryptionStep } from '../types';
 import { normalizeInput, filterLettersOnly } from '../normalize';
 
 export function caesarEncrypt(plaintext: string, options: CipherOptions = {}): CipherResult {
@@ -13,17 +13,50 @@ export function caesarEncrypt(plaintext: string, options: CipherOptions = {}): C
   const text = filterLettersOnly(normalized.text, uppercaseOutput);
   const normalizedShift = ((shift % 26) + 26) % 26;
 
-  const result = text
-    .split('')
-    .map(char => {
-      const base = uppercaseOutput ? 65 : 97; // 'A' or 'a'
-      const code = char.charCodeAt(0) - base;
-      const newCode = (code + normalizedShift) % 26;
-      return String.fromCharCode(base + newCode);
-    })
-    .join('');
+  const steps: EncryptionStep[] = [];
+  let result = '';
 
-  return { success: true, output: result };
+  // Initial step
+  steps.push({
+    stepNumber: 0,
+    description: `Caesar Cipher ile şifreleme başlıyor (Shift: ${normalizedShift})`,
+    input: text,
+    output: '',
+    details: `Her harf ${normalizedShift} pozisyon kaydırılacak`,
+  });
+
+  // Process each character
+  text.split('').forEach((char, index) => {
+    const base = uppercaseOutput ? 65 : 97;
+    const code = char.charCodeAt(0) - base;
+    const newCode = (code + normalizedShift) % 26;
+    const newChar = String.fromCharCode(base + newCode);
+    result += newChar;
+
+    steps.push({
+      stepNumber: index + 1,
+      description: `Harf ${index + 1}: '${char}' → '${newChar}'`,
+      input: char,
+      output: newChar,
+      calculation: `${char}(${code}) + ${normalizedShift} = ${newCode} → ${newChar}`,
+      details: `Pozisyon: ${code} + Shift: ${normalizedShift} = ${newCode} (mod 26)`,
+      highlight: {
+        inputIndex: [index],
+        outputIndex: [index],
+      },
+    });
+  });
+
+  // Final step
+  steps.push({
+    stepNumber: text.length + 1,
+    description: 'Şifreleme tamamlandı!',
+    input: text,
+    output: result,
+    details: `Toplam ${text.length} harf şifrelendi`,
+  });
+
+  return { success: true, output: result, steps };
 }
 
 export function caesarDecrypt(ciphertext: string, options: CipherOptions = {}): CipherResult {
