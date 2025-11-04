@@ -78,7 +78,7 @@
 
 \begin{center}
 \includegraphics[width=0.9\textwidth]{assets/screenshot-homepage.png}
-\captionof{figure}{Classical Cipher Studio - Homepage}
+\captionof{figure}{Web Application - Homepage with Educational Content and Algorithm Overview}
 \end{center}
 
 \vfill
@@ -486,11 +486,11 @@ Result: LXFOPV
 \subsection{Playfair Cipher}
 
 \subsubsection{Description}
-Playfair Cipher, invented by Charles Wheatstone in 1854, was the first practical digraph (letter pair) substitution cipher. It was used by the British forces in World War I. The cipher uses a 5×5 matrix and encrypts pairs of letters instead of single letters.
+Playfair Cipher, invented by Charles Wheatstone in 1854, was the first practical digraph (letter pair) substitution cipher. It was used by the British forces in World War I. The cipher uses a 5$\times$5 matrix and encrypts pairs of letters instead of single letters.
 
 \subsubsection{Working Principle}
 \begin{enumerate}
-    \item Create 5×5 matrix using keyword (I and J are merged)
+    \item Create 5$\times$5 matrix using keyword (I and J are merged)
     \item Split plaintext into digraphs (letter pairs)
     \item Apply transformation rules:
     \begin{itemize}
@@ -524,8 +524,8 @@ U & V & W & X & Z \\ \hline
 \end{tcolorbox}
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{assets/screenshot-playfair-matrix.png}
-\captionof{figure}{Playfair Cipher - 5×5 Matrix Visualization}
+\includegraphics[width=0.9\textwidth]{assets/screenshot-cipher-selection.png}
+\captionof{figure}{Playfair Cipher - Example showing digraph encryption interface}
 \end{center}
 
 \subsubsection{Implementation Details}
@@ -606,7 +606,7 @@ My Playfair implementation includes advanced features:
 \begin{enumerate}
     \item \textbf{Automatic Padding:} Inserts 'X' between duplicate letters
     \item \textbf{I/J Merge Option:} Configurable I/J handling
-    \item \textbf{Matrix Visualization:} Web UI displays the 5×5 grid
+    \item \textbf{Matrix Visualization:} Web UI displays the 5$\times$5 grid
     \item \textbf{Digraph Highlighting:} Shows which rule applies (row/column/rectangle)
 \end{enumerate}
 
@@ -670,7 +670,7 @@ P = K^{-1} \cdot C \pmod{26}
 
 The key matrix must be invertible modulo 26 (i.e., $\gcd(\det(K), 26) = 1$).
 
-\subsubsection{Example (3×3 Matrix)}
+\subsubsection{Example (3$\times$3 Matrix)}
 \begin{tcolorbox}[colback=gray!10,colframe=gray!50]
 \textbf{Key Matrix:}
 $K = \begin{bmatrix} 6 & 24 & 1 \\ 13 & 16 & 10 \\ 20 & 17 & 15 \end{bmatrix}$ \\[0.3cm]
@@ -684,8 +684,8 @@ $\begin{bmatrix} 6 & 24 & 1 \\ 13 & 16 & 10 \\ 20 & 17 & 15 \end{bmatrix} \begin
 \end{tcolorbox}
 
 \begin{center}
-\includegraphics[width=0.8\textwidth]{assets/screenshot-hill-cipher.png}
-\captionof{figure}{Hill Cipher - Matrix Multiplication Visualization}
+\includegraphics[width=0.9\textwidth]{assets/screenshot-step-by-step-2.png}
+\captionof{figure}{Hill Cipher - Matrix operations visualization}
 \end{center}
 
 \subsubsection{Implementation Details}
@@ -780,14 +780,14 @@ private int[,] CalculateInverse(int[,] matrix)
 Hill Cipher is the most mathematically complex algorithm in my project:
 
 \begin{enumerate}
-    \item \textbf{Variable Matrix Size:} Support for 2×2, 3×3, or larger matrices
+    \item \textbf{Variable Matrix Size:} Support for 2$\times$2, 3$\times$3, or larger matrices
     \item \textbf{Matrix Validation:} Check if determinant is coprime with 26
     \item \textbf{Automatic Padding:} Pad plaintext to multiple of matrix size
     \item \textbf{Matrix Input Formats:} Support both string and file-based matrix input
     \item \textbf{Visualization:} Display matrix multiplication step-by-step
 \end{enumerate}
 
-\textbf{Complete 3×3 Example:}
+\textbf{Complete 3$\times$3 Example:}
 \begin{verbatim}
 Key Matrix K:
 +----------+
@@ -1285,7 +1285,7 @@ Result: SEk=
     \item \textbf{Overhead:} 33\% size increase (3 bytes → 4 characters)
     \item \textbf{Legitimate Use Cases:} Email attachments (MIME), embedding images in HTML/CSS, JWT structure (not security), data URLs
     \item \textbf{Security Level:} N/A - This is not a security mechanism
-    \item \textbf{Educational Value:} Perfect example of why "obscurity ≠ security"
+    \item \textbf{Educational Value:} Perfect example of why "obscurity $\neq$ security"
 \end{itemize}
 
 \newpage
@@ -1414,13 +1414,18 @@ The crown jewel of the web application is the interactive step-by-step visualiza
 \end{itemize}
 
 \begin{center}
-\includegraphics[width=0.9\textwidth]{assets/screenshot-step-by-step-1.png}
-\captionof{figure}{Step-by-Step Visualization - Caesar Cipher Example}
+\includegraphics[width=0.9\textwidth]{assets/screenshot-algorithms.png}
+\captionof{figure}{Homepage - Algorithm Cards with Historical Context and Security Analysis (Expandable)}
 \end{center}
 
 \begin{center}
-\includegraphics[width=0.9\textwidth]{assets/screenshot-step-by-step-2.png}
-\captionof{figure}{Interactive Controls - Speed Adjustment and Navigation}
+\includegraphics[width=0.9\textwidth]{assets/screenshot-step-by-step-1.png}
+\captionof{figure}{Step-by-Step Visualization Component - Character-by-Character Encryption Process}
+\end{center}
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{assets/screenshot-hill-cipher.png}
+\captionof{figure}{Step-by-Step Visualization Controls - Play/Pause, Speed Adjustment, and Step Navigation}
 \end{center}
 
 \subsubsection{TypeScript Type Definitions}
@@ -1466,7 +1471,7 @@ Both implementations produce \textbf{identical results} for the same inputs:
 Caesar & ATTACK & shift=3 & DWWDFN \\
 Vigenère & ATTACK & LEMON & LXFOPV \\
 Playfair & HELLO & MONARCHY & YKRMRM \\
-Hill (2×2) & ACT & [6,24,1;13,16,10;20,17,15] & POH \\
+Hill (2$\times$2) & ACT & [6,24,1;13,16,10;20,17,15] & POH \\
 Columnar & ATTACK & ZEBRAS & CTTAAK \\
 XOR & HELLO & secret & 48454c4c... \\
 Base64 & ATTACK & - & QVREQUNL \\ \bottomrule
@@ -1480,12 +1485,7 @@ Base64 & ATTACK & - & QVREQUNL \\ \bottomrule
 
 \subsection{Homepage - Educational Content}
 
-The homepage provides comprehensive educational material for all 8 algorithms:
-
-\begin{center}
-\includegraphics[width=0.9\textwidth]{assets/screenshot-algorithms.png}
-\captionof{figure}{Algorithm Cards with Expandable Details}
-\end{center}
+The homepage provides comprehensive educational material for all 8 algorithms with expandable algorithm cards.
 
 Each algorithm card includes:
 \begin{itemize}
@@ -1511,12 +1511,12 @@ The interactive playground allows users to:
 
 \begin{center}
 \includegraphics[width=0.9\textwidth]{assets/screenshot-cipher-selection.png}
-\captionof{figure}{Cipher Selection Interface}
+\captionof{figure}{Cipher Playground - Algorithm Selection and Parameter Configuration Interface}
 \end{center}
 
 \begin{center}
 \includegraphics[width=0.9\textwidth]{assets/screenshot-caesar-cipher.png}
-\captionof{figure}{Caesar Cipher - Real-time Encryption}
+\captionof{figure}{Caesar Cipher Interface - Real-time Encryption with Shift Parameter Control}
 \end{center}
 
 \subsection{Design Features}
@@ -1557,7 +1557,7 @@ The C\# application includes comprehensive xUnit tests:
         \item Monoalphabetic (keyword and 26-char key)
         \item Vigenère (classic and autokey)
         \item Playfair (basic and double letters)
-        \item Hill (2×2 and 3×3 matrices)
+        \item Hill (2$\times$2 and 3$\times$3 matrices)
         \item Columnar (basic and short key)
         \item Differential XOR (small, custom, empty)
         \item Base64 (basic and binary)
@@ -1591,7 +1591,7 @@ Vigenère & ATTACKATDAWN & LEMON & \textcolor{green}{Pass} \\
 Vigenère (autokey) & ATTACKATDAWN & LEMON & \textcolor{green}{Pass} \\
 Monoalphabetic & ATTACKATDAWN & CIPHER & \textcolor{green}{Pass} \\
 Playfair & ATTACKATDAWN & MONARCHY & \textcolor{green}{Pass} \\
-Hill (3×3) & ATTACKATDAWN & 6,24,1;... & \textcolor{green}{Pass} \\
+Hill (3$\times$3) & ATTACKATDAWN & 6,24,1;... & \textcolor{green}{Pass} \\
 Columnar & ATTACKATDAWN & ZEBRAS & \textcolor{green}{Pass} \\
 Diff. XOR & HELLO WORLD & secret & \textcolor{green}{Pass} \\
 Base64 & ATTACKATDAWN & - & \textcolor{green}{Pass} \\ \bottomrule
