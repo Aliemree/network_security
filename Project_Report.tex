@@ -101,13 +101,18 @@ This project presents a comprehensive implementation of 8 classical encryption a
 \subsection{Key Features}
 
 \begin{itemize}[leftmargin=*]
-    \item \textbf{8 Classical Cipher Algorithms:} Caesar, Monoalphabetic, Vigenère, Playfair, Hill, Columnar Transposition, Differential XOR, and Base64
+    \item \textbf{6 Classical Cipher Algorithms:} Caesar, Monoalphabetic, Vigenère, Playfair, Hill, Columnar Transposition
+    \item \textbf{2 Modern Cryptographic Concepts:} Differential XOR (stream cipher concept) and Base64 (encoding, not encryption)
     \item \textbf{Dual Implementation:} C\# console application and TypeScript/Next.js web application producing identical results
     \item \textbf{Interactive Step-by-Step Visualization:} Real-time animation showing character-by-character transformation
     \item \textbf{100\% Test Coverage:} 21 passing xUnit tests validating all algorithms
     \item \textbf{Cross-Platform:} Works on Windows, macOS, and Linux
     \item \textbf{Educational Content:} Detailed theoretical explanations, historical context, and security analysis
 \end{itemize}
+
+\begin{tcolorbox}[colback=yellow!10,colframe=orange!75!black,title=Important Note on Algorithm Selection]
+\textbf{Algorithm Classification:} This project includes 6 authentic classical ciphers (Caesar through Columnar Transposition) plus Differential XOR (a modern stream cipher concept) and Base64 (an encoding scheme, not encryption). The latter two are included for educational comparison and to demonstrate the evolution from classical to modern cryptographic techniques.
+\end{tcolorbox}
 
 \subsection{Technologies Used}
 
@@ -469,9 +474,11 @@ Result: LXFOPV
 
 \subsubsection{Security Analysis}
 \begin{itemize}
-    \item \textbf{Vulnerabilities:} Kasiski examination, Index of Coincidence
-    \item \textbf{Security Level:} \textcolor{orange}{Medium} - More secure than Caesar
+    \item \textbf{Vulnerabilities:} Kasiski examination, Index of Coincidence, frequency analysis on key length
+    \item \textbf{Security Level:} \textcolor{red}{Broken} - Easily cracked with modern cryptanalysis
+    \item \textbf{Why Insecure:} Periodic key repetition creates patterns; key length can be determined through statistical analysis
     \item \textbf{Complexity:} O(n) - Linear time
+    \item \textbf{Historical Note:} Considered "unbreakable" until 1863 when Kasiski published his cryptanalysis method
 \end{itemize}
 
 \newpage
@@ -637,10 +644,12 @@ Ciphertext: YFQUPM
 \subsubsection{Security Analysis}
 \begin{itemize}
     \item \textbf{Key Space:} 25! (much larger than monoalphabetic)
-    \item \textbf{Advantages:} Digraph frequency different from single letter frequency
-    \item \textbf{Vulnerabilities:} Digraph frequency analysis still possible
-    \item \textbf{Security Level:} \textcolor{orange}{Medium}
+    \item \textbf{Advantages:} Digraph frequency different from single letter frequency, resists simple frequency analysis
+    \item \textbf{Vulnerabilities:} Digraph frequency analysis, known-plaintext attacks
+    \item \textbf{Security Level:} \textcolor{red}{Insecure} - Can be broken with sufficient ciphertext
+    \item \textbf{Why Insecure:} English has only ~600 common digraphs; statistical patterns remain exploitable
     \item \textbf{Complexity:} O(n) - Linear time (digraph-based)
+    \item \textbf{Historical Use:} Used by British forces in WWI before being broken by German cryptanalysts
 \end{itemize}
 
 \subsection{Hill Cipher}
@@ -811,11 +820,13 @@ Verify: K^-1 * K = I (mod 26)
 
 \subsubsection{Security Analysis}
 \begin{itemize}
-    \item \textbf{Advantages:} Frequency analysis completely ineffective, diffusion property
-    \item \textbf{Vulnerabilities:} Known-plaintext attack (requires $n^2$ plaintext-ciphertext pairs)
-    \item \textbf{Security Level:} \textcolor{green}{High} (for classical standards)
+    \item \textbf{Advantages:} Frequency analysis completely ineffective, diffusion property, algebraically sound
+    \item \textbf{Vulnerabilities:} Known-plaintext attack (requires only $n^2$ plaintext-ciphertext pairs), chosen-plaintext attack
+    \item \textbf{Security Level:} \textcolor{red}{Broken} - Despite being strongest classical cipher
+    \item \textbf{Why Insecure:} Small key space (mod 26), vulnerable to known-plaintext attacks, no key derivation
     \item \textbf{Complexity:} O(n) with O($n^2$) matrix operations (constant size)
-    \item \textbf{Historical Significance:} Predecessor of modern block ciphers
+    \item \textbf{Historical Significance:} Predecessor of modern block ciphers like AES
+    \item \textbf{Modern Lesson:} Demonstrated importance of large key spaces and secure key exchange
 \end{itemize}
 
 \subsection{Columnar Transposition Cipher}
@@ -1101,18 +1112,35 @@ P[2] = C[2] XOR P[1] = 0x09 XOR 0x45 = 0x4C = 'L'
 \end{itemize}
 
 \subsubsection{Security Analysis}
+
+\begin{tcolorbox}[colback=yellow!10,colframe=orange!75!black,title=Note: Not a Classical Cipher]
+\textbf{Important:} Differential XOR with SHA-256 key derivation is a \textbf{modern cryptographic concept}, not a classical cipher. It's included here to demonstrate the evolution from classical to modern techniques and to illustrate stream cipher principles.
+\end{tcolorbox}
+
 \begin{itemize}
-    \item \textbf{Advantages:} Very fast (XOR is hardware-native), diffusion property
-    \item \textbf{Vulnerabilities:} Known-plaintext attack trivial, error propagation
-    \item \textbf{Security Level:} \textcolor{orange}{Medium} - Not secure without proper key
+    \item \textbf{Advantages:} Very fast (XOR is hardware-native), shows chaining/diffusion concepts
+    \item \textbf{Vulnerabilities:} Plaintext-based chaining is fundamentally flawed, known-plaintext attack trivial, error propagation, no authentication
+    \item \textbf{Security Level:} \textcolor{red}{Insecure} - Educational demonstration only
+    \item \textbf{Why Insecure:} Uses plaintext for chaining (not a secure PRNG), predictable patterns, no integrity protection
     \item \textbf{Complexity:} O(n) - Linear time
-    \item \textbf{Modern Equivalent:} Stream ciphers like ChaCha20
+    \item \textbf{Modern Equivalent:} Proper stream ciphers like ChaCha20-Poly1305 with true random keystreams
+    \item \textbf{Educational Purpose:} Demonstrates why modern ciphers use cryptographically secure PRNGs instead of plaintext chaining
 \end{itemize}
 
 \subsection{Base64 Encoding}
 
+\begin{tcolorbox}[colback=red!10,colframe=red!75!black,title=CRITICAL: This is NOT Encryption!]
+\textbf{Base64 is an ENCODING scheme, NOT a cipher or encryption algorithm.} It provides \textbf{ZERO security}. Anyone can decode Base64 instantly without any key. It's included in this project solely to:
+\begin{itemize}
+    \item Demonstrate the critical difference between encoding and encryption
+    \item Show why obfuscation $\neq$ security
+    \item Provide a utility for handling binary data in the XOR cipher
+\end{itemize}
+\textbf{Never use Base64 for security purposes!}
+\end{tcolorbox}
+
 \subsubsection{Description}
-Base64 is \textbf{NOT an encryption algorithm} - it is an encoding scheme that converts binary data to ASCII text. It is included here as a utility tool. Base64 is widely used in email (MIME), URLs, and data embedding.
+Base64 is a binary-to-text encoding scheme that represents binary data in ASCII string format using 64 printable characters. It is widely used in email (MIME), URLs, data URLs, and JWT tokens - but again, \textbf{it provides no security whatsoever}.
 
 \subsubsection{Working Principle}
 \begin{enumerate}
@@ -1250,11 +1278,14 @@ Result: SEk=
 
 \subsubsection{Security Analysis}
 \begin{itemize}
-    \item \textbf{Warning:} \textcolor{red}{NOT ENCRYPTION!} - Provides zero security
-    \item \textbf{Purpose:} Binary-to-text encoding for data transport
-    \item \textbf{Reversibility:} Trivial decoding (no key required)
-    \item \textbf{Overhead:} 33\% size increase
-    \item \textbf{Use Cases:} Email attachments, JWT tokens, data URLs
+    \item \textbf{Warning:} \textcolor{red}{NOT ENCRYPTION!} - Provides \textbf{absolutely zero security}
+    \item \textbf{Purpose:} Binary-to-text encoding for data transport only
+    \item \textbf{Reversibility:} Instant decoding with no key - anyone can decode Base64
+    \item \textbf{Common Misconception:} Many beginners mistakenly think Base64 "encrypts" data - it does not!
+    \item \textbf{Overhead:} 33\% size increase (3 bytes → 4 characters)
+    \item \textbf{Legitimate Use Cases:} Email attachments (MIME), embedding images in HTML/CSS, JWT structure (not security), data URLs
+    \item \textbf{Security Level:} N/A - This is not a security mechanism
+    \item \textbf{Educational Value:} Perfect example of why "obscurity ≠ security"
 \end{itemize}
 
 \newpage
