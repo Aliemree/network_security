@@ -16,30 +16,30 @@ export default function Home() {
             Classical Cipher Studio
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            8 klasik şifreleme algoritmasını keşfedin, test edin ve öğrenin
+            Explore, test, and learn 8 classical encryption algorithms
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <FeatureCard 
             icon={<Code2 className="w-8 h-8" />}
-            title="8 Algoritma"
-            description="Caesar, Vigenère, Playfair, Hill ve daha fazlası"
+            title="8 Algorithms"
+            description="Caesar, Vigenère, Playfair, Hill and more"
           />
           <FeatureCard 
             icon={<Lock className="w-8 h-8" />}
-            title="Şifreleme"
-            description="Metinlerinizi güvenli bir şekilde şifreleyin"
+            title="Encryption"
+            description="Encrypt your texts securely"
           />
           <FeatureCard 
             icon={<Key className="w-8 h-8" />}
-            title="Şifre Çözme"
-            description="Şifreli metinleri çözün ve anlayın"
+            title="Decryption"
+            description="Decrypt and understand ciphertexts"
           />
           <FeatureCard 
             icon={<ShieldCheck className="w-8 h-8" />}
-            title="Doğrulama"
-            description="Türkçe karakter kontrolü ve validation"
+            title="Validation"
+            description="Character validation and checks"
           />
         </div>
 
@@ -48,16 +48,16 @@ export default function Home() {
             href="/cipher"
             className="inline-flex items-center gap-2 px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white text-lg font-semibold rounded-lg transition-colors"
           >
-            Cipher Playground&apos;a Git
+            Go to Cipher Playground
             <Code2 className="w-5 h-5" />
           </Link>
         </div>
 
         <div className="mt-16 bg-slate-800/50 backdrop-blur rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-6">Desteklenen Algoritmalar ve Teorik Açıklamaları</h2>
+          <h2 className="text-2xl font-bold text-white mb-6">Supported Algorithms and Theoretical Explanations</h2>
           <p className="text-gray-400 mb-6 text-sm">
-            Her algoritmanın detaylı açıklaması, çalışma prensibi ve örnekleri aşağıda yer almaktadır. 
-            Ders notlarınızdaki klasik şifreleme yöntemlerinin uygulamalı versiyonlarıdır.
+            Detailed explanations, working principles, and examples of each algorithm are provided below. 
+            These are practical versions of the classical encryption methods covered in your course notes.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             <AlgorithmItem details={{
@@ -360,9 +360,9 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
   }[details.security.level];
 
   const securityLabel = {
-    low: 'Düşük Güvenlik',
-    medium: 'Orta Güvenlik',
-    high: 'Yüksek Güvenlik'
+    low: 'Low Security',
+    medium: 'Medium Security',
+    high: 'High Security'
   }[details.security.level];
 
   return (
@@ -398,7 +398,7 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <BookOpen className="w-4 h-4 text-purple-400" />
-              <h4 className="text-sm font-semibold text-purple-300">Tarihçe</h4>
+              <h4 className="text-sm font-semibold text-purple-300">History</h4>
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">{details.history}</p>
           </div>
@@ -407,7 +407,7 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Code2 className="w-4 h-4 text-purple-400" />
-              <h4 className="text-sm font-semibold text-purple-300">Teorik Açıklama</h4>
+              <h4 className="text-sm font-semibold text-purple-300">Theoretical Explanation</h4>
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">{details.theory}</p>
           </div>
@@ -416,7 +416,7 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Key className="w-4 h-4 text-purple-400" />
-              <h4 className="text-sm font-semibold text-purple-300">Adım Adım Çalışma Prensibi</h4>
+              <h4 className="text-sm font-semibold text-purple-300">Step-by-Step Working Principle</h4>
             </div>
             <ol className="list-decimal list-inside space-y-1">
               {details.howItWorks.map((step, idx) => (
@@ -429,7 +429,7 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Code2 className="w-4 h-4 text-purple-400" />
-              <h4 className="text-sm font-semibold text-purple-300">Pratik Örnek</h4>
+              <h4 className="text-sm font-semibold text-purple-300">Practical Example</h4>
             </div>
             <div className="text-xs text-gray-400 font-mono bg-slate-800/70 p-3 rounded border border-purple-500/20">
               {details.example}
@@ -440,13 +440,13 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <ShieldCheck className="w-4 h-4 text-purple-400" />
-              <h4 className="text-sm font-semibold text-purple-300">Güvenlik Analizi</h4>
+              <h4 className="text-sm font-semibold text-purple-300">Security Analysis</h4>
             </div>
             <div className="grid md:grid-cols-2 gap-3">
               <div>
                 <div className="flex items-center gap-1 mb-1">
                   <AlertCircle className="w-3 h-3 text-red-400" />
-                  <span className="text-xs font-semibold text-red-300">Zayıf Yönler</span>
+                  <span className="text-xs font-semibold text-red-300">Weaknesses</span>
                 </div>
                 <ul className="space-y-1">
                   {details.security.vulnerabilities.map((vuln, idx) => (
@@ -457,7 +457,7 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
               <div>
                 <div className="flex items-center gap-1 mb-1">
                   <CheckCircle2 className="w-3 h-3 text-green-400" />
-                  <span className="text-xs font-semibold text-green-300">Güçlü Yönler</span>
+                  <span className="text-xs font-semibold text-green-300">Strengths</span>
                 </div>
                 <ul className="space-y-1">
                   {details.security.strengths.map((strength, idx) => (
@@ -470,7 +470,7 @@ function AlgorithmItem({ details }: { details: AlgorithmDetails }) {
 
           {/* Kullanım Alanı */}
           <div className="bg-purple-500/10 border border-purple-500/20 rounded p-3">
-            <h4 className="text-xs font-semibold text-purple-300 mb-1">📚 Kullanım Alanı</h4>
+            <h4 className="text-xs font-semibold text-purple-300 mb-1">📚 Use Cases</h4>
             <p className="text-xs text-gray-400">{details.useCase}</p>
           </div>
         </div>

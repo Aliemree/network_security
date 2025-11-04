@@ -9,7 +9,7 @@ interface StepByStepViewerProps {
   title?: string;
 }
 
-export default function StepByStepViewer({ steps, title = 'Adım Adım Şifreleme' }: StepByStepViewerProps) {
+export default function StepByStepViewer({ steps, title = 'Step-by-Step Encryption' }: StepByStepViewerProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1000); // ms
@@ -71,7 +71,7 @@ export default function StepByStepViewer({ steps, title = 'Adım Adım Şifrelem
           <h3 className="text-lg font-semibold text-white">{title}</h3>
         </div>
         <div className="text-sm text-gray-400">
-          Adım {currentStep + 1} / {steps.length}
+          Step {currentStep + 1} / {steps.length}
         </div>
       </div>
 
@@ -84,7 +84,7 @@ export default function StepByStepViewer({ steps, title = 'Adım Adım Şifrelem
           
           {step.calculation && (
             <div className="font-mono text-sm text-green-400 bg-slate-950/50 p-3 rounded border border-green-500/20 mb-3">
-              <span className="text-gray-400">Hesaplama:</span> {step.calculation}
+              <span className="text-gray-400">Calculation:</span> {step.calculation}
             </div>
           )}
 
@@ -127,7 +127,7 @@ export default function StepByStepViewer({ steps, title = 'Adım Adım Şifrelem
           <button
             onClick={handleReset}
             className="p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
-            title="Başa Dön"
+            title="Reset"
           >
             <RotateCcw className="w-4 h-4 text-white" />
           </button>
@@ -135,14 +135,14 @@ export default function StepByStepViewer({ steps, title = 'Adım Adım Şifrelem
             onClick={handlePrev}
             disabled={currentStep === 0}
             className="p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Önceki"
+            title="Previous"
           >
             <SkipBack className="w-4 h-4 text-white" />
           </button>
           <button
             onClick={handlePlayPause}
             className="p-3 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors"
-            title={isPlaying ? 'Duraklat' : 'Oynat'}
+            title={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? (
               <Pause className="w-5 h-5 text-white" />
@@ -154,7 +154,7 @@ export default function StepByStepViewer({ steps, title = 'Adım Adım Şifrelem
             onClick={handleNext}
             disabled={currentStep >= steps.length - 1}
             className="p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Sonraki"
+            title="Next"
           >
             <SkipForward className="w-4 h-4 text-white" />
           </button>
@@ -162,23 +162,23 @@ export default function StepByStepViewer({ steps, title = 'Adım Adım Şifrelem
 
         {/* Speed Control */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-400">Hız:</span>
+          <span className="text-xs text-gray-400">Speed:</span>
           <select
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
             className="px-2 py-1 bg-slate-700 text-white text-sm rounded border border-slate-600"
           >
-            <option value={2000}>0.5x (Yavaş)</option>
+            <option value={2000}>0.5x (Slow)</option>
             <option value={1000}>1x (Normal)</option>
-            <option value={500}>2x (Hızlı)</option>
-            <option value={250}>4x (Çok Hızlı)</option>
+            <option value={500}>2x (Fast)</option>
+            <option value={250}>4x (Very Fast)</option>
           </select>
         </div>
       </div>
 
       {/* Step List (scrollable) */}
       <div className="mt-6">
-        <div className="text-xs text-gray-400 mb-2 font-semibold">Tüm Adımlar:</div>
+        <div className="text-xs text-gray-400 mb-2 font-semibold">All Steps:</div>
         <div className="max-h-48 overflow-y-auto space-y-1 bg-slate-900/30 rounded p-2 border border-slate-700">
           {steps.map((s, idx) => (
             <button

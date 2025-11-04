@@ -97,10 +97,10 @@ export default function CipherPage() {
           setSteps(result.steps);
         }
       } else {
-        setError(result.error || 'Bilinmeyen hata');
+        setError(result.error || 'Unknown error');
       }
     } catch (err) {
-      setError('İşlem sırasında bir hata oluştu: ' + (err instanceof Error ? err.message : 'Bilinmeyen hata'));
+      setError('An error occurred during processing: ' + (err instanceof Error ? err.message : 'Unknown error'));
     }
   };
 
@@ -116,7 +116,7 @@ export default function CipherPage() {
         <div className="mb-8">
           <Link href="/" className="inline-flex items-center gap-2 text-purple-300 hover:text-purple-200">
             <ArrowLeft className="w-5 h-5" />
-            Ana Sayfaya Dön
+            Back to Home
           </Link>
         </div>
 
@@ -160,7 +160,7 @@ export default function CipherPage() {
               }`}
             >
               <Lock className="w-5 h-5" />
-              Şifrele
+              Encrypt
             </button>
             <button
               onClick={() => setMode('decrypt')}
@@ -171,7 +171,7 @@ export default function CipherPage() {
               }`}
             >
               <Unlock className="w-5 h-5" />
-              Çöz
+              Decrypt
             </button>
           </div>
 
@@ -179,7 +179,7 @@ export default function CipherPage() {
           <div className="mb-6 space-y-4">
             {cipher === 'caesar' && (
               <div>
-                <label className="block text-white mb-2">Shift (Kaydırma):</label>
+                <label className="block text-white mb-2">Shift:</label>
                 <input
                   type="number"
                   value={shift}
@@ -192,14 +192,14 @@ export default function CipherPage() {
             {(cipher === 'mono' || cipher === 'vigenere' || cipher === 'playfair' || cipher === 'columnar') && (
               <div>
                 <label className="block text-white mb-2">
-                  {cipher === 'vigenere' ? 'Anahtar (Key):' : 'Anahtar Kelime (Keyword):'}
+                  {cipher === 'vigenere' ? 'Key:' : 'Keyword:'}
                 </label>
                 <input
                   type="text"
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
                   className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg"
-                  placeholder={cipher === 'playfair' ? 'örn: MONARCHY' : 'örn: LEMON'}
+                  placeholder={cipher === 'playfair' ? 'e.g., MONARCHY' : 'e.g., LEMON'}
                 />
               </div>
             )}
@@ -212,7 +212,7 @@ export default function CipherPage() {
                   onChange={(e) => setAutokey(e.target.checked)}
                   className="w-4 h-4"
                 />
-                <label className="text-white">Autokey Modu</label>
+                <label className="text-white">Autokey Mode</label>
               </div>
             )}
 
@@ -224,13 +224,13 @@ export default function CipherPage() {
                   onChange={(e) => setIjMerge(e.target.checked)}
                   className="w-4 h-4"
                 />
-                <label className="text-white">I/J Birleştir</label>
+                <label className="text-white">Merge I/J</label>
               </div>
             )}
 
             {cipher === 'hill' && (
               <div>
-                <label className="block text-white mb-2">Matris (örn: 6,24,1;13,16,10;20,17,15):</label>
+                <label className="block text-white mb-2">Matrix (e.g., 6,24,1;13,16,10;20,17,15):</label>
                 <input
                   type="text"
                   value={matrix}
@@ -258,13 +258,13 @@ export default function CipherPage() {
           {/* Input */}
           <div className="mb-4">
             <label className="block text-white mb-2">
-              {mode === 'encrypt' ? 'Düz Metin (Plaintext):' : 'Şifreli Metin (Ciphertext):'}
+              {mode === 'encrypt' ? 'Plaintext:' : 'Ciphertext:'}
             </label>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="w-full h-32 px-4 py-2 bg-slate-700 text-white rounded-lg resize-none font-mono"
-              placeholder={mode === 'encrypt' ? 'ATTACKATDAWN' : 'Şifreli metni buraya yapıştırın...'}
+              placeholder={mode === 'encrypt' ? 'ATTACKATDAWN' : 'Paste ciphertext here...'}
             />
           </div>
 
@@ -273,7 +273,7 @@ export default function CipherPage() {
             onClick={handleProcess}
             className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors"
           >
-            {mode === 'encrypt' ? 'Şifrele' : 'Çöz'}
+            {mode === 'encrypt' ? 'Encrypt' : 'Decrypt'}
           </button>
 
           {/* Error */}
@@ -288,14 +288,14 @@ export default function CipherPage() {
             <div className="mt-4">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-white">
-                  {mode === 'encrypt' ? 'Şifreli Metin (Ciphertext):' : 'Düz Metin (Plaintext):'}
+                  {mode === 'encrypt' ? 'Ciphertext:' : 'Plaintext:'}
                 </label>
                 <button
                   onClick={handleCopy}
                   className="flex items-center gap-2 px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded transition-colors"
                 >
                   {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied ? 'Kopyalandı!' : 'Kopyala'}
+                  {copied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
               <div className="p-4 bg-slate-700 rounded-lg">
@@ -312,13 +312,13 @@ export default function CipherPage() {
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 rounded-lg transition-colors mb-2"
               >
                 {showSteps ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                {showSteps ? 'Adım Adım Görünümü Gizle' : 'Adım Adım Görünümü Göster'}
+                {showSteps ? 'Hide Step-by-Step View' : 'Show Step-by-Step View'}
               </button>
               
               {showSteps && (
                 <StepByStepViewer 
                   steps={steps} 
-                  title={`${cipher.charAt(0).toUpperCase() + cipher.slice(1)} - Adım Adım ${mode === 'encrypt' ? 'Şifreleme' : 'Çözme'}`}
+                  title={`${cipher.charAt(0).toUpperCase() + cipher.slice(1)} - Step-by-Step ${mode === 'encrypt' ? 'Encryption' : 'Decryption'}`}
                 />
               )}
             </div>
