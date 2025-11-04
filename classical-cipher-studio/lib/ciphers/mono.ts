@@ -1,5 +1,5 @@
 // Monoalphabetic Substitution Cipher
-import { CipherOptions, CipherResult } from '../types';
+import { CipherOptions, CipherResult, EncryptionStep } from '../types';
 import { normalizeInput, filterLettersOnly } from '../normalize';
 
 function generateSubstitutionAlphabet(keyword: string): string {
@@ -41,15 +41,49 @@ export function monoEncrypt(plaintext: string, options: CipherOptions = {}): Cip
   const text = filterLettersOnly(normalized.text, true);
   const substitutionAlphabet = generateSubstitutionAlphabet(keyword);
 
-  const result = text
-    .split('')
-    .map(char => {
-      const index = char.charCodeAt(0) - 65;
-      return substitutionAlphabet[index];
-    })
-    .join('');
+  const steps: EncryptionStep[] = [];
+  const normalAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-  return { success: true, output: uppercaseOutput ? result : result.toLowerCase() };
+  // Initial step - show alphabet mapping
+  steps.push({
+    stepNumber: 0,
+    description: `Monoalphabetic Substitution Cipher - Anahtar: ${keyword}`,
+    input: text,
+    output: '',
+    details: `Normal: ${normalAlphabet}\nCipher: ${substitutionAlphabet}`,
+  });
+
+  let result = '';
+
+  text.split('').forEach((char, index) => {
+    const charIndex = char.charCodeAt(0) - 65;
+    const newChar = substitutionAlphabet[charIndex];
+    result += newChar;
+
+    steps.push({
+      stepNumber: index + 1,
+      description: `Harf ${index + 1}: '${char}' → '${newChar}'`,
+      input: char,
+      output: newChar,
+      calculation: `${char} (pozisyon ${charIndex}) → ${newChar} (substitution alphabet)`,
+      details: `Normal alfabede pozisyon ${charIndex}, cipher alfabede '${newChar}'`,
+      highlight: {
+        inputIndex: [index],
+        outputIndex: [index],
+      },
+    });
+  });
+
+  // Final step
+  steps.push({
+    stepNumber: text.length + 1,
+    description: 'Şifreleme tamamlandı!',
+    input: text,
+    output: result,
+    details: `Toplam ${text.length} harf substitution ile değiştirildi`,
+  });
+
+  return { success: true, output: uppercaseOutput ? result : result.toLowerCase(), steps };
 }
 
 export function monoDecrypt(ciphertext: string, options: CipherOptions = {}): CipherResult {

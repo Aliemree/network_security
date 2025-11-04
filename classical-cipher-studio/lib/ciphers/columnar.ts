@@ -1,5 +1,5 @@
 // Columnar Transposition Cipher
-import { CipherOptions, CipherResult } from '../types';
+import { CipherOptions, CipherResult, EncryptionStep } from '../types';
 import { normalizeInput, filterLettersOnly } from '../normalize';
 
 function getKeyOrder(key: string): number[] {
@@ -33,6 +33,18 @@ export function columnarEncrypt(plaintext: string, options: CipherOptions = {}):
   const keyLength = cleanKey.length;
   const order = getKeyOrder(cleanKey);
 
+  const steps: EncryptionStep[] = [];
+
+  // Initial step
+  const keyWithOrder = cleanKey.split('').map((char, idx) => `${char}(${order[idx]})`).join(' ');
+  steps.push({
+    stepNumber: 0,
+    description: 'Columnar Transposition Cipher başlıyor',
+    input: text,
+    output: '',
+    details: `Anahtar: ${cleanKey}\nSıralama: ${keyWithOrder}\nSütun sayısı: ${keyLength}`,
+  });
+
   // Build grid
   const rows = Math.ceil(text.length / keyLength);
   const grid: string[][] = Array(rows)
@@ -46,18 +58,50 @@ export function columnarEncrypt(plaintext: string, options: CipherOptions = {}):
     }
   }
 
+  // Show grid construction
+  const gridDisplay = grid.map(row => row.join(' ')).join('\n');
+  steps.push({
+    stepNumber: 1,
+    description: 'Matrise satır satır yazılıyor',
+    input: text,
+    output: gridDisplay,
+    details: `${rows} satır × ${keyLength} sütun grid oluşturuldu`,
+  });
+
   // Read columns in key order
   let result = '';
   for (let rank = 0; rank < keyLength; rank++) {
     const col = order.indexOf(rank);
+    const keyChar = cleanKey[col];
+    let columnText = '';
+    
     for (let r = 0; r < rows; r++) {
       if (grid[r][col]) {
+        columnText += grid[r][col];
         result += grid[r][col];
       }
     }
+
+    steps.push({
+      stepNumber: rank + 2,
+      description: `Sütun ${rank + 1}: '${keyChar}' (pozisyon ${col}) okunuyor`,
+      input: columnText,
+      output: result,
+      calculation: `Sıra ${rank} → Sütun ${col} → "${columnText}"`,
+      details: `Anahtar '${keyChar}' alfabetik sırada ${rank + 1}. pozisyonda`,
+    });
   }
 
-  return { success: true, output: uppercaseOutput ? result : result.toLowerCase() };
+  // Final step
+  steps.push({
+    stepNumber: keyLength + 2,
+    description: 'Transposition tamamlandı!',
+    input: text,
+    output: result,
+    details: `Toplam ${keyLength} sütun sırayla okundu`,
+  });
+
+  return { success: true, output: uppercaseOutput ? result : result.toLowerCase(), steps };
 }
 
 export function columnarDecrypt(ciphertext: string, options: CipherOptions = {}): CipherResult {

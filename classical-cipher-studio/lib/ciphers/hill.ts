@@ -1,5 +1,5 @@
 // Hill Cipher (NxN Matrix)
-import { CipherOptions, CipherResult } from '../types';
+import { CipherOptions, CipherResult, EncryptionStep } from '../types';
 import { normalizeInput, filterLettersOnly } from '../normalize';
 
 function parseMatrix(matrixStr: string): number[][] | null {
@@ -144,15 +144,57 @@ export function hillEncrypt(plaintext: string, options: CipherOptions = {}): Cip
     text += 'X';
   }
 
+  const steps: EncryptionStep[] = [];
+
+  // Show matrix
+  const matrixDisplay = matrix.map(row => row.join(' ')).join('\n');
+  steps.push({
+    stepNumber: 0,
+    description: `Hill Cipher - ${n}×${n} Matris`,
+    input: text,
+    output: '',
+    details: `Matris:\n${matrixDisplay}\n\nDeterminant: ${det} (mod 26 = ${detMod})\nTersi alınabilir: ✓`,
+  });
+
   let result = '';
+  let blockIndex = 0;
 
   for (let i = 0; i < text.length; i += n) {
     const block = text.slice(i, i + n).split('').map(c => c.charCodeAt(0) - 65);
     const encrypted = multiplyMatrixVector(matrix, block);
-    result += encrypted.map(val => String.fromCharCode(65 + val)).join('');
+    const encryptedChars = encrypted.map(val => String.fromCharCode(65 + val)).join('');
+    result += encryptedChars;
+
+    const blockStr = text.slice(i, i + n);
+    const vectorStr = `[${block.join(', ')}]`;
+    const resultStr = `[${encrypted.join(', ')}]`;
+
+    steps.push({
+      stepNumber: blockIndex + 1,
+      description: `Blok ${blockIndex + 1}: '${blockStr}' → '${encryptedChars}'`,
+      input: blockStr,
+      output: encryptedChars,
+      calculation: `Matrix × ${vectorStr} = ${resultStr} (mod 26)`,
+      details: `${n} harflik blok matris çarpımı ile dönüştürüldü`,
+      highlight: {
+        inputIndex: Array.from({ length: n }, (_, idx) => i + idx),
+        outputIndex: Array.from({ length: n }, (_, idx) => i + idx),
+      },
+    });
+
+    blockIndex++;
   }
 
-  return { success: true, output: uppercaseOutput ? result : result.toLowerCase() };
+  // Final step
+  steps.push({
+    stepNumber: blockIndex + 1,
+    description: 'Hill Cipher şifreleme tamamlandı!',
+    input: text,
+    output: result,
+    details: `Toplam ${blockIndex} blok (${n}×${blockIndex} = ${text.length} harf) şifrelendi`,
+  });
+
+  return { success: true, output: uppercaseOutput ? result : result.toLowerCase(), steps };
 }
 
 export function hillDecrypt(ciphertext: string, options: CipherOptions = {}): CipherResult {

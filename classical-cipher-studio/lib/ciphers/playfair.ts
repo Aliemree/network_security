@@ -1,5 +1,5 @@
 // Playfair Cipher
-import { CipherOptions, CipherResult } from '../types';
+import { CipherOptions, CipherResult, EncryptionStep } from '../types';
 import { normalizeInput, filterLettersOnly } from '../normalize';
 
 function buildPlayfairMatrix(keyword: string, ijMerge: boolean): string[][] {
@@ -87,28 +87,72 @@ export function playfairEncrypt(plaintext: string, options: CipherOptions = {}):
   const matrix = buildPlayfairMatrix(keyword, ijMerge);
   const pairs = preparePairs(text, padChar);
 
+  const steps: EncryptionStep[] = [];
+
+  // Show matrix
+  const matrixDisplay = matrix.map(row => row.join(' ')).join('\n');
+  steps.push({
+    stepNumber: 0,
+    description: `Playfair Cipher - 5×5 Matris (Anahtar: ${keyword})`,
+    input: text,
+    output: '',
+    details: `Matris:\n${matrixDisplay}\n\nDigraph çiftleri: ${pairs.join(', ')}`,
+  });
+
   let result = '';
+  let pairIndex = 0;
 
   for (const pair of pairs) {
     const [r1, c1] = findPosition(matrix, pair[0]);
     const [r2, c2] = findPosition(matrix, pair[1]);
 
+    let enc1, enc2, rule;
+
     if (r1 === r2) {
       // Same row
-      result += matrix[r1][(c1 + 1) % 5];
-      result += matrix[r2][(c2 + 1) % 5];
+      enc1 = matrix[r1][(c1 + 1) % 5];
+      enc2 = matrix[r2][(c2 + 1) % 5];
+      rule = 'Aynı satır → sağa kayma';
     } else if (c1 === c2) {
       // Same column
-      result += matrix[(r1 + 1) % 5][c1];
-      result += matrix[(r2 + 1) % 5][c2];
+      enc1 = matrix[(r1 + 1) % 5][c1];
+      enc2 = matrix[(r2 + 1) % 5][c2];
+      rule = 'Aynı sütun → aşağı kayma';
     } else {
       // Rectangle
-      result += matrix[r1][c2];
-      result += matrix[r2][c1];
+      enc1 = matrix[r1][c2];
+      enc2 = matrix[r2][c1];
+      rule = 'Dikdörtgen → köşegen değişim';
     }
+
+    result += enc1 + enc2;
+
+    steps.push({
+      stepNumber: pairIndex + 1,
+      description: `Digraph ${pairIndex + 1}: '${pair}' → '${enc1}${enc2}'`,
+      input: pair,
+      output: enc1 + enc2,
+      calculation: `${pair[0]}(${r1},${c1}) + ${pair[1]}(${r2},${c2}) → ${enc1}${enc2}`,
+      details: rule,
+      highlight: {
+        inputIndex: [pairIndex * 2, pairIndex * 2 + 1],
+        outputIndex: [pairIndex * 2, pairIndex * 2 + 1],
+      },
+    });
+
+    pairIndex++;
   }
 
-  return { success: true, output: uppercaseOutput ? result : result.toLowerCase() };
+  // Final step
+  steps.push({
+    stepNumber: pairs.length + 1,
+    description: 'Playfair şifreleme tamamlandı!',
+    input: text,
+    output: result,
+    details: `Toplam ${pairs.length} digraph çifti şifrelendi`,
+  });
+
+  return { success: true, output: uppercaseOutput ? result : result.toLowerCase(), steps };
 }
 
 export function playfairDecrypt(ciphertext: string, options: CipherOptions = {}): CipherResult {

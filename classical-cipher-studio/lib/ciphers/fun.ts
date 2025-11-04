@@ -1,5 +1,5 @@
 // Differential XOR Cipher (Python-compatible)
-import { CipherOptions, CipherResult } from '../types';
+import { CipherOptions, CipherResult, EncryptionStep } from '../types';
 
 function stringToBytes(str: string): Uint8Array {
   return new TextEncoder().encode(str);
@@ -67,8 +67,19 @@ export function funEncrypt(plaintext: string, options: CipherOptions = {}): Ciph
   const iv = deriveIVFromPassphrase(passphrase, blockSizeBytes);
   const key = deriveKeyFromPassphrase(passphrase, blockSizeBytes);
 
+  const steps: EncryptionStep[] = [];
+
+  steps.push({
+    stepNumber: 0,
+    description: 'Differential XOR Cipher başlıyor',
+    input: plaintext,
+    output: '',
+    details: `Passphrase: ${passphrase}\nBlock size: ${blockSizeBits} bit (${blockSizeBytes} byte)\nIV: ${bytesToHex(iv).slice(0, 16)}...\nKey: ${bytesToHex(key).slice(0, 16)}...`,
+  });
+
   let previousBlock = iv;
   const encryptedBlocks: Uint8Array[] = [];
+  let blockIndex = 0;
 
   for (let i = 0; i < plainBytes.length; i += blockSizeBytes) {
     const block = new Uint8Array(blockSizeBytes);
@@ -82,7 +93,21 @@ export function funEncrypt(plaintext: string, options: CipherOptions = {}): Ciph
     const encryptedBlock = xorBlocks(xorWithPrev, key);
     
     encryptedBlocks.push(encryptedBlock);
+
+    const blockHex = bytesToHex(block).slice(0, 32);
+    const encHex = bytesToHex(encryptedBlock).slice(0, 32);
+
+    steps.push({
+      stepNumber: blockIndex + 1,
+      description: `Blok ${blockIndex + 1}: ${endIdx - i} byte XOR işlemi`,
+      input: `${blockHex}${block.length > 16 ? '...' : ''}`,
+      output: `${encHex}${encryptedBlock.length > 16 ? '...' : ''}`,
+      calculation: `(Block ⊕ PrevBlock) ⊕ Key`,
+      details: `Differential chaining: Her blok bir önceki ciphertext ile XOR'lanır`,
+    });
+
     previousBlock = encryptedBlock;
+    blockIndex++;
   }
 
   const allBytes = new Uint8Array(encryptedBlocks.length * blockSizeBytes);
@@ -90,7 +115,17 @@ export function funEncrypt(plaintext: string, options: CipherOptions = {}): Ciph
     allBytes.set(block, idx * blockSizeBytes);
   });
 
-  return { success: true, output: bytesToHex(allBytes) };
+  const finalHex = bytesToHex(allBytes);
+
+  steps.push({
+    stepNumber: blockIndex + 1,
+    description: 'XOR Cipher tamamlandı!',
+    input: plaintext,
+    output: finalHex,
+    details: `Toplam ${blockIndex} blok (${plainBytes.length} byte) şifrelendi\nHex output: ${finalHex.length} karakter`,
+  });
+
+  return { success: true, output: finalHex, steps };
 }
 
 export function funDecrypt(ciphertext: string, options: CipherOptions = {}): CipherResult {
